@@ -1,0 +1,144 @@
+{
+  "password": "123",
+  "passwordHint": "Please contact the family for the password.",
+
+  "coupleNames": "Shubham Mehra & Pallavi Mane",
+  "tagline": "Together with our families, we invite you to celebrate our wedding.",
+  "cityLine": "Gwalior, Madhya Pradesh",
+
+  "lastUpdated": "2026-01-10T12:00:00+05:30",
+
+  "primaryVenue": {
+    "name": "Taj Usha Kiran Palace",
+    "address": "Gwalior, Madhya Pradesh",
+    "mapUrl": "https://maps.google.com/?q=Taj%20Usha%20Kiran%20Palace%20Gwalior"
+  },
+
+  "primaryEvent": {
+    "id": "ceremony",
+    "title": "Pani Grahan Sanskar (Saat Phere)",
+    "start": "2026-02-08T11:00:00+05:30",
+    "end": "2026-02-08T13:00:00+05:30"
+  },
+
+  "schedule": [
+    {
+      "id": "tilak-lagnaotsav",
+      "title": "Lagnaotsav (Tilak)",
+      "start": "2026-02-04T16:00:00+05:30",
+      "end": "2026-02-04T18:00:00+05:30",
+      "locationName": "Residence",
+      "address": "Bhopal, Madhya Pradesh",
+      "mapUrl": "https://maps.app.goo.gl/2vx7FMJnCerpMgiLA"
+    },
+    {
+      "id": "matrika-mandapachchadan",
+      "title": "Matrika Pujan & Mandapachchadan",
+      "start": "2026-02-05T10:00:00+05:30",
+      "end": "2026-02-05T12:00:00+05:30",
+      "locationName": "Residence",
+      "address": "Bhopal, Madhya Pradesh",
+      "mapUrl": "https://maps.app.goo.gl/2vx7FMJnCerpMgiLA"
+    },
+    {
+      "id": "sagai-haldi",
+      "title": "Engagement & Haldi",
+      "start": "2026-02-07T11:00:00+05:30",
+      "end": "2026-02-07T15:00:00+05:30",
+      "locationName": "Taj Usha Kiran Palace",
+      "address": "Gwalior, Madhya Pradesh",
+      "mapUrl": "https://maps.google.com/?q=Taj%20Usha%20Kiran%20Palace%20Gwalior"
+    },
+    {
+      "id": "sangeet",
+      "title": "Sangeet",
+      "start": "2026-02-07T19:00:00+05:30",
+      "end": "2026-02-07T24:00:00+05:30",
+      "locationName": "Taj Usha Kiran Palace",
+      "address": "Gwalior, Madhya Pradesh",
+      "mapUrl": "https://maps.google.com/?q=Taj%20Usha%20Kiran%20Palace%20Gwalior"
+    },
+    {
+      "id": "saat-phere-pani-grahan",
+      "title": "Wedding Ceremony (Saat Phere and Marathi Wedding)",
+      "start": "2026-02-08T11:00:00+05:30",
+      "end": "2026-02-08T15:00:00+05:30",
+      "locationName": "Taj Usha Kiran Palace",
+      "address": "Gwalior, Madhya Pradesh",
+      "mapUrl": "https://maps.google.com/?q=Taj%20Usha%20Kiran%20Palace%20Gwalior"
+    },
+    {
+      "id": "aashirwad-samaroh",
+      "title": "Reception",
+      "start": "2026-02-08T19:00:00+05:30",
+      "end": "2026-02-08T23:00:00+05:30",
+      "locationName": "Taj Usha Kiran Palace",
+      "address": "Gwalior, Madhya Pradesh",
+      "mapUrl": "https://maps.google.com/?q=Taj%20Usha%20Kiran%20Palace%20Gwalior"
+    }
+  ],
+
+  "updates": [
+    {
+      "when": "2026-01-10T12:00:00+05:30",
+      "text": "Wedding details added from the invitation card. Calendar end times are estimates and can be refined."
+    }
+  ],
+
+  "contacts": [
+    {
+      "name": "Shubham Mehra",
+      "role": "Groom",
+      "phone": "+91 9967303919"
+    },
+    {
+      "name": "Pallavi Mane",
+      "role": "Bride",
+      "phone": "+91-7506110790"
+    },
+    {
+      "name": "Priya",
+      "role": "Sister of Groom",
+      "phone": "+91-8965863630"
+    },
+    {
+      "name": "Jitesh Gosar",
+      "role": "Very close friend",
+      "phone": "+91-8517069572"
+    }
+  ],
+
+  "rsvp": {
+    "enabled": true,
+    "mode": "embed",
+    "showButton": true,
+    "formUrl": "https://docs.google.com/forms/d/e/1FAIpQLSf3b65A7HFAZtwq4MClUORIBRHRaVG4k7JF4yTS2enjKrz7Yw/viewform?usp=dialog",
+    "embedUrl": "https://docs.google.com/forms/d/e/1FAIpQLSf3b65A7HFAZtwq4MClUORIBRHRaVG4k7JF4yTS2enjKrz7Yw/viewform?embedded=true",
+    "deadline": "2026-01-25T23:59:00+05:30",
+    "title": "RSVP",
+    "buttonText": "RSVP (open form here)",
+    "openInNewTabText": "Open in Google Forms"
+  },
+
+  "theme": {
+    "decor": {
+      "enabled": true,
+      "mode": "corners",
+      "imageUrl": "/weddings/assets/decor-corner-2.png",
+      "size": 360,
+      "opacityLight": 0.88,
+      "opacityDark": 0.88,
+      "rotate": true,
+      "baseRotation": 0,
+      "corners": {
+        "tl": { "rotation": 0 },
+        "tr": { "rotation": 0 },
+        "bl": { "rotation": 0 },
+        "br": { "rotation": 0 }
+      }
+    }
+  }
+
+
+
+}
