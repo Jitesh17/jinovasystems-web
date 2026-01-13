@@ -96,6 +96,13 @@ const pageTitle = `Wedding Invitation - ${slug}`;
       <div class="card-joy relative z-10 mx-auto max-w-3xl shadow-2xl">
         <div class="rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm dark:border-neutral-800 dark:bg-neutral-900/90 backdrop-blur-sm">
           <div class="text-center space-y-4 mt-6">
+            <div id="couplePhotoWrap" class="hidden flex justify-center mb-6">
+              <img 
+                id="couplePhoto" 
+                class="object-cover shadow-2xl border-4 border-white dark:border-neutral-800" 
+                loading="eager"
+              />
+            </div>
             <h1 id="coupleNames" class="font-heading text-6xl sm:text-7xl font-medium tracking-wide text-neutral-900 dark:text-white leading-tight">
               Loading...
             </h1>
@@ -171,219 +178,133 @@ const pageTitle = `Wedding Invitation - ${slug}`;
       </div>
     </div>
   </div>
-
-  <script is:inline define:vars={{ detailsUrl, calendarUrl, slug, baseUrl }}>
+<script is:inline define:vars={{ detailsUrl, calendarUrl, slug, baseUrl }}>
     const $ = (id) => document.getElementById(id);
 
-    function pad2(n) {
-      return String(n).padStart(2, "0");
-    }
-
-    function isAbsUrl(u) {
-      return typeof u === "string" && /^(https?:|data:)/i.test(u);
-    }
-
-    // Makes "/weddings/..." work on GitHub Pages base paths like "/repo/"
+    // --- Helpers ---
+    function pad2(n) { return String(n).padStart(2, "0"); }
+    function isAbsUrl(u) { return typeof u === "string" && /^(https?:|data:)/i.test(u); }
+    
     function resolveAssetUrl(u) {
       if (!u) return "";
       if (isAbsUrl(u)) return u;
-
       const baseNoSlash = String(baseUrl || "/").replace(/\/$/, "");
-
-      // If JSON uses "/weddings/..", prefix base
       if (u.startsWith("/")) return baseNoSlash + u;
-
-      // If JSON uses "weddings/..", also prefix base
       return String(baseUrl || "/") + u;
     }
 
     function formatLocal(iso) {
       const d = new Date(iso);
-      const opts = { weekday: "short", year: "numeric", month: "short", day: "2-digit", hour: "2-digit", minute: "2-digit" };
-      return d.toLocaleString(undefined, opts);
+      return d.toLocaleString(undefined, { weekday: "short", year: "numeric", month: "short", day: "2-digit", hour: "2-digit", minute: "2-digit" });
     }
 
-    function renderCountdown(el, targetIso, label) {
-      if (!el) return null;
+    // --- Animation Helper (THIS WAS MISSING) ---
+    function setupScrollObserver() {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1 });
+      
+      document.querySelectorAll('.reveal-entry').forEach(el => observer.observe(el));
+    }
 
-      // 1. SETUP: Create the fancy block structure
-      if (!el.querySelector('.countdown-unit')) {
-        // UPDATED: Added "w-full" and "justify-center" to force centering
-        el.className = "flex flex-wrap gap-6 sm:gap-10 justify-center w-full my-6"; 
-        el.innerHTML = `
-          <div class="countdown-unit text-center min-w-[60px]">
-            <div class="font-heading text-4xl sm:text-5xl text-neutral-900 dark:text-white leading-none" data-type="d">0</div>
-            <div class="text-[10px] uppercase tracking-widest text-neutral-500 mt-2 font-medium">Days</div>
-          </div>
-          <div class="countdown-unit text-center min-w-[60px]">
-            <div class="font-heading text-4xl sm:text-5xl text-neutral-900 dark:text-white leading-none" data-type="h">00</div>
-            <div class="text-[10px] uppercase tracking-widest text-neutral-500 mt-2 font-medium">Hrs</div>
-          </div>
-          <div class="countdown-unit text-center min-w-[60px]">
-            <div class="font-heading text-4xl sm:text-5xl text-neutral-900 dark:text-white leading-none" data-type="m">00</div>
-            <div class="text-[10px] uppercase tracking-widest text-neutral-500 mt-2 font-medium">Mins</div>
-          </div>
-          <div class="countdown-unit text-center min-w-[60px]">
-            <div class="font-heading text-4xl sm:text-5xl text-neutral-900 dark:text-white leading-none" data-type="s">00</div>
-            <div class="text-[10px] uppercase tracking-widest text-neutral-500 mt-2 font-medium">Secs</div>
-          </div>
-        `;
-      }
+    // --- Components ---
+    function renderCountdown(el, targetIso) {
+      if (!el || el.querySelector('.countdown-unit')) return;
+      
+      el.className = "flex flex-wrap gap-6 sm:gap-10 justify-center w-full my-6"; 
+      el.innerHTML = `
+        <div class="countdown-unit text-center min-w-[60px]"><div class="font-heading text-4xl sm:text-5xl text-neutral-900 dark:text-white leading-none" data-type="d">0</div><div class="text-[10px] uppercase tracking-widest text-neutral-500 mt-2 font-medium">Days</div></div>
+        <div class="countdown-unit text-center min-w-[60px]"><div class="font-heading text-4xl sm:text-5xl text-neutral-900 dark:text-white leading-none" data-type="h">00</div><div class="text-[10px] uppercase tracking-widest text-neutral-500 mt-2 font-medium">Hrs</div></div>
+        <div class="countdown-unit text-center min-w-[60px]"><div class="font-heading text-4xl sm:text-5xl text-neutral-900 dark:text-white leading-none" data-type="m">00</div><div class="text-[10px] uppercase tracking-widest text-neutral-500 mt-2 font-medium">Mins</div></div>
+        <div class="countdown-unit text-center min-w-[60px]"><div class="font-heading text-4xl sm:text-5xl text-neutral-900 dark:text-white leading-none" data-type="s">00</div><div class="text-[10px] uppercase tracking-widest text-neutral-500 mt-2 font-medium">Secs</div></div>
+      `;
 
-      const dEl = el.querySelector('[data-type="d"]');
-      const hEl = el.querySelector('[data-type="h"]');
-      const mEl = el.querySelector('[data-type="m"]');
-      const sEl = el.querySelector('[data-type="s"]');
-      const pad = (n) => String(n).padStart(2, "0");
-
+      const [dEl, hEl, mEl, sEl] = ['d','h','m','s'].map(k => el.querySelector(`[data-type="${k}"]`));
+      
       function tick() {
         const ms = new Date(targetIso).getTime() - Date.now();
-        
-        if (ms <= 0) {
-          el.innerHTML = `<div class="font-heading text-3xl text-neutral-900 dark:text-white animate-pulse">Happening now</div>`;
-          return false;
-        }
-
-        const s = Math.floor(ms / 1000);
-        const days = Math.floor(s / 86400);
-        const hours = Math.floor((s % 86400) / 3600);
-        const mins = Math.floor((s % 3600) / 60);
-        const secs = s % 60;
-
-        if (dEl) dEl.textContent = days;
-        if (hEl) hEl.textContent = pad(hours);
-        if (mEl) mEl.textContent = pad(mins);
-        if (sEl) sEl.textContent = pad(secs);
-        
+        if (ms <= 0) { el.innerHTML = `<div class="font-heading text-3xl text-neutral-900 dark:text-white animate-pulse">Happening now</div>`; return false; }
+        const s = Math.floor(ms/1000);
+        if (dEl) dEl.textContent = Math.floor(s/86400);
+        if (hEl) hEl.textContent = pad2(Math.floor((s%86400)/3600));
+        if (mEl) mEl.textContent = pad2(Math.floor((s%3600)/60));
+        if (sEl) sEl.textContent = pad2(s%60);
         return true;
       }
-
-      if (tick()) {
-        return setInterval(() => { tick(); }, 1000);
-      }
-      return null;
+      if (tick()) setInterval(tick, 1000);
     }
 
     function buildGoogleCalendarLink(ev) {
       const start = new Date(ev?.start);
       const end = new Date(ev?.end);
-
-      if (Number.isNaN(start.getTime()) || Number.isNaN(end.getTime())) {
-        return "https://calendar.google.com/calendar/";
-      }
-
-      const fmt = (d) => {
-        const y = d.getUTCFullYear();
-        const mo = pad2(d.getUTCMonth() + 1);
-        const da = pad2(d.getUTCDate());
-        const h = pad2(d.getUTCHours());
-        const mi = pad2(d.getUTCMinutes());
-        const ss = pad2(d.getUTCSeconds());
-        return `${y}${mo}${da}T${h}${mi}${ss}Z`;
-      };
-
-      const dates = `${fmt(start)}/${fmt(end)}`;
-      const title = encodeURIComponent(String(ev?.title || "Event"));
+      if (isNaN(start) || isNaN(end)) return "https://calendar.google.com/";
+      
+      const fmt = (d) => d.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
       const details = encodeURIComponent(String(ev?.notes || ""));
       const location = encodeURIComponent([ev?.locationName, ev?.address].filter(Boolean).join(", "));
-
-      return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${dates}&details=${details}&location=${location}`;
+      return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(ev?.title||"Event")}&dates=${fmt(start)}/${fmt(end)}&details=${details}&location=${location}`;
     }
 
     function applyTheme(theme) {
       const wrapper = $("themeWrapper");
       if (!wrapper) return;
-
-      // Reset styles we control
       wrapper.style.backgroundImage = "";
-      wrapper.style.backgroundSize = "";
-      wrapper.style.backgroundPosition = "";
-      wrapper.style.backgroundRepeat = "";
-
-      // Remove any old gradient classes (best effort)
       wrapper.classList.remove("bg-gradient-to-br");
-      [...wrapper.classList].forEach((c) => {
-        if (c.startsWith("from-") || c.startsWith("via-") || c.startsWith("to-")) wrapper.classList.remove(c);
-      });
-
       if (!theme) return;
 
       if (theme.background === "gradient" && theme.gradient) {
         wrapper.classList.add("bg-gradient-to-br");
-        String(theme.gradient).split(" ").forEach((c) => wrapper.classList.add(c));
-        return;
-      }
-
-      if (theme.background === "image" && theme.imageUrl) {
+        theme.gradient.split(" ").forEach(c => wrapper.classList.add(c));
+      } else if (theme.background === "image" && theme.imageUrl) {
         wrapper.style.backgroundImage = `url('${resolveAssetUrl(theme.imageUrl)}')`;
         wrapper.style.backgroundSize = "cover";
         wrapper.style.backgroundPosition = "center";
-        wrapper.style.backgroundRepeat = "no-repeat";
       }
     }
 
-    // Supports details.decor OR details.theme.decor
     function applyDecor(details) {
       const root = $("decorCorners");
-      const tl = $("decorTL");
-      const tr = $("decorTR");
-      const bl = $("decorBL");
-      const br = $("decorBR");
-      if (!root || !tl || !tr || !bl || !br) return;
-
-      // Reset
+      if (!root) return;
+      
+      // Clear previous corners
+      ["TL","TR","BL","BR"].forEach(k => {
+          const el = $(`decor${k}`);
+          if(el) { el.style = ""; el.style.backgroundRepeat = "no-repeat"; }
+      });
       root.classList.add("hidden");
-      for (const el of [tl, tr, bl, br]) {
-        el.style.backgroundImage = "";
-        el.style.backgroundRepeat = "no-repeat";
-        el.style.backgroundSize = "";
-        el.style.backgroundPosition = "";
-        el.style.width = "";
-        el.style.height = "";
-        el.style.opacity = "";
-        el.style.transform = "";
-        el.style.filter = "";
-      }
 
       const d = details?.decor || details?.theme?.decor;
       if (!d || d.enabled !== true) return;
 
-      const isDark = document.documentElement.classList.contains("dark");
-      const opacity = isDark ? (d.opacityDark ?? 0.16) : (d.opacityLight ?? 0.28);
-      const size = Number(d.size || 360);
+      const size = d.size || 360;
+      const opacity = document.documentElement.classList.contains("dark") ? (d.opacityDark||0.16) : (d.opacityLight||0.28);
+      const baseRot = d.rotation || 0;
+      const autoRot = d.rotate !== false;
 
-      // Starting rotation (your request)
-      const baseRot = Number(d.rotation || 0);
-      const autoRotate = d.rotate !== false;
-
-      const pick = (key) => d.corners?.[key]?.imageUrl || d.imageUrl || "";
-      const extra = (key) => Number(d.corners?.[key]?.rotation || 0);
-
-      const setCorner = (el, url, rotDeg) => {
-        if (!url) return;
+      const setCorner = (id, key, offset) => {
+        const el = $(id);
+        const url = d.corners?.[key]?.imageUrl || d.imageUrl;
+        if (!el || !url) return;
+        const rot = baseRot + offset + (Number(d.corners?.[key]?.rotation) || 0);
         el.style.width = `${size}px`;
         el.style.height = `${size}px`;
-        el.style.opacity = String(opacity);
+        el.style.opacity = opacity;
         el.style.backgroundImage = `url('${resolveAssetUrl(url)}')`;
-        el.style.backgroundRepeat = "no-repeat";
         el.style.backgroundSize = "contain";
         el.style.backgroundPosition = "center";
-        el.style.transform = `rotate(${rotDeg}deg)`;
+        el.style.transform = `rotate(${rot}deg)`;
+        root.classList.remove("hidden");
       };
 
-      // Corner offsets if autoRotate enabled
-      const offTL = 0;
-      const offTR = autoRotate ? 90 : 0;
-      const offBL = autoRotate ? -90 : 0;
-      const offBR = autoRotate ? 180 : 0;
-
-      setCorner(tl, pick("tl"), baseRot + offTL + extra("tl"));
-      setCorner(tr, pick("tr"), baseRot + offTR + extra("tr"));
-      setCorner(bl, pick("bl"), baseRot + offBL + extra("bl"));
-      setCorner(br, pick("br"), baseRot + offBR + extra("br"));
-
-      // Show only if at least one image exists
-      if (pick("tl") || pick("tr") || pick("bl") || pick("br")) root.classList.remove("hidden");
+      setCorner("decorTL", "tl", 0);
+      setCorner("decorTR", "tr", autoRot ? 90 : 0);
+      setCorner("decorBL", "bl", autoRot ? -90 : 0);
+      setCorner("decorBR", "br", autoRot ? 180 : 0);
     }
 
     function renderCouplePhoto(details) {
@@ -391,342 +312,226 @@ const pageTitle = `Wedding Invitation - ${slug}`;
       const img = $("couplePhoto");
       if (!wrap || !img) return;
 
-      // Default: completely hidden, no placeholder
       wrap.classList.add("hidden");
       img.removeAttribute("src");
-      img.alt = "";
-      img.style.width = "";
-      img.style.height = "";
-      img.classList.remove("rounded-full", "rounded-2xl");
+      img.removeAttribute("style");
+      
+      wrap.className = "hidden flex justify-center mb-6"; 
+      img.className = "object-cover transition-transform duration-700 hover:scale-[1.02]";
 
       const photo = details?.media?.couplePhoto;
       if (!photo || photo.enabled !== true || !photo.src) return;
 
-      const size = Number(photo.size || 140);
       img.src = resolveAssetUrl(photo.src);
       img.alt = photo.alt || "";
-      img.style.width = `${size}px`;
-      img.style.height = `${size}px`;
+      const size = photo.size;
 
-      const shape = String(photo.shape || "circle").toLowerCase();
-      img.classList.add(shape === "rounded" ? "rounded-2xl" : "rounded-full");
+      // Position Logic (Supports "50% 75%")
+      const pos = photo.position || (size === 'hero' ? 'top' : 'center');
+      const tailwindMap = { "top": "object-top", "center": "object-center", "bottom": "object-bottom" };
+      if (tailwindMap[pos]) img.classList.add(tailwindMap[pos]);
+      else img.style.objectPosition = pos;
+
+      // Size Logic
+      if (size === 'hero') {
+        wrap.classList.remove("mb-6");
+        wrap.classList.add("-mx-6", "-mt-6", "mb-8", "rounded-t-2xl", "overflow-hidden");
+        img.className += " w-full h-[450px] sm:h-[500px]"; 
+      } else if (size === 'full') {
+        img.style.width = '100%';
+        img.style.maxWidth = '600px'; 
+        img.style.height = 'auto';
+        img.classList.add("rounded-2xl");
+      } else {
+        img.style.width = `${size || 140}px`;
+        img.style.height = `${size || 140}px`;
+        img.classList.add((photo.shape === "rounded") ? "rounded-2xl" : "rounded-full");
+      }
+
+      // Decor Logic
+      if (photo.shadow !== false) img.classList.add("shadow-2xl");
+      if (photo.border !== false && size !== 'hero') {
+         img.classList.add("border-4", "border-white", "dark:border-neutral-800");
+      }
 
       wrap.classList.remove("hidden");
     }
 
     function renderRsvp(rsvp) {
       const section = $("rsvpSection");
-      const title = $("rsvpTitle");
-      const deadlineText = $("rsvpDeadlineText");
+      if (!section) return;
+      section.style.display = "none";
+      
+      if (!rsvp || rsvp.enabled !== true) return;
+      section.style.display = "block";
+      
+      $("rsvpTitle").textContent = rsvp.title || "RSVP";
+      if (rsvp.deadline) {
+        const dl = $("rsvpDeadlineText");
+        dl.textContent = `RSVP deadline: ${formatLocal(rsvp.deadline)}`;
+        dl.style.display = "block";
+      }
 
-      const buttonWrap = $("rsvpButtonWrap");
-      const button = $("rsvpButton");
-      const openNewTab = $("rsvpOpenInNewTab");
-
+      const btnWrap = $("rsvpButtonWrap");
       const embedWrap = $("rsvpEmbedWrap");
       const iframe = $("rsvpIframe");
-
-      if (!section || !title || !deadlineText || !buttonWrap || !button || !openNewTab || !embedWrap || !iframe) return;
-
-      section.style.display = "none";
-      buttonWrap.style.display = "none";
+      
+      btnWrap.style.display = "none";
       embedWrap.style.display = "none";
-      deadlineText.style.display = "none";
-      iframe.removeAttribute("src");
 
-      if (!rsvp || rsvp.enabled !== true) return;
-
-      section.style.display = "block";
-      title.textContent = rsvp.title || "RSVP";
-
-      if (rsvp.deadline) {
-        deadlineText.textContent = `RSVP deadline: ${formatLocal(rsvp.deadline)}`;
-        deadlineText.style.display = "block";
+      if (String(rsvp.mode).toLowerCase() === "embed" && rsvp.embedUrl) {
+         if (rsvp.showButton !== false) {
+           btnWrap.style.display = "block";
+           $("rsvpButton").textContent = rsvp.buttonText || "Open RSVP";
+           $("rsvpButton").onclick = (e) => {
+             e.preventDefault();
+             embedWrap.style.display = "block";
+             iframe.src = rsvp.embedUrl;
+           };
+         } else {
+           embedWrap.style.display = "block";
+           iframe.src = rsvp.embedUrl;
+         }
+      } else if (rsvp.formUrl) {
+         btnWrap.style.display = "block";
+         $("rsvpButton").href = rsvp.formUrl;
+         $("rsvpButton").target = "_blank";
       }
-
-      const mode = String(rsvp.mode || "button").toLowerCase();
-      const showButton = rsvp.showButton !== false;
-
-      if (rsvp.formUrl) {
-        openNewTab.href = rsvp.formUrl;
-        openNewTab.textContent = rsvp.openInNewTabText || "Open in Google Forms";
-      }
-
-      // Button mode
-      if (mode === "button") {
-        if (!rsvp.formUrl) return;
-        button.textContent = rsvp.buttonText || "RSVP Now";
-        button.href = rsvp.formUrl;
-        button.target = "_blank";
-        button.rel = "noopener";
-        buttonWrap.style.display = "block";
-        return;
-      }
-
-      // Embed mode
-      if (!rsvp.embedUrl) return;
-
-      let iframeLoaded = false;
-
-      // If no button, load immediately
-      if (!showButton) {
-        iframe.src = rsvp.embedUrl;
-        embedWrap.style.display = "block";
-        return;
-      }
-
-      // Show button first, then embed on click
-      buttonWrap.style.display = "block";
-      button.textContent = rsvp.buttonText || "Open RSVP here";
-      button.href = "#";
-      button.target = "";
-      button.rel = "";
-
-      button.onclick = (e) => {
-        e.preventDefault();
-        embedWrap.style.display = "block";
-        if (!iframeLoaded) {
-          iframe.src = rsvp.embedUrl;
-          iframeLoaded = true;
-        }
-        embedWrap.scrollIntoView({ behavior: "smooth", block: "start" });
-      };
+      
+      if (rsvp.formUrl) $("rsvpOpenInNewTab").href = rsvp.formUrl;
     }
 
-function renderInvite(details) {
+    function renderInvite(details) {
       try {
-        // --- 1. Basic Text Details ---
+        // 1. Text
         $("coupleNames").textContent = details.coupleNames || "";
         $("tagline").textContent = details.tagline || "";
         $("cityLine").textContent = details.cityLine || "";
-
-        const startIso = details?.primaryEvent?.start;
-        $("weddingDate").textContent = startIso ? formatLocal(startIso) : "";
-
-        if (details?.primaryVenue?.mapUrl) {
-          $("mapBtn").href = details.primaryVenue.mapUrl;
-        }
-
-        // --- 2. Calendar Links ---
-        // Safety: Ensure calendarUrl is defined in scope, else ignore
-        if (typeof calendarUrl !== 'undefined') {
-          try {
-            const httpsIcs = new URL(calendarUrl, window.location.href).toString();
-            $("subscribeBtn").href = httpsIcs.replace(/^https:/, "webcal:");
-          } catch (e) { console.warn("Calendar URL error", e); }
-        }
-
-        if (startIso) {
-          renderCountdown($("countdown"), startIso, details?.primaryEvent?.title || "");
-        }
-
-// --- 3. Render Schedule (Responsive Ticket Style) ---
-        const schedule = $("schedule");
         
-        if (schedule && schedule.style) { 
-          schedule.innerHTML = ''; 
-          schedule.className = "space-y-6 mt-6"; 
+        const startIso = details?.primaryEvent?.start;
+        $("weddingDate").textContent = details?.primaryEvent?.displayDate || (startIso ? formatLocal(startIso) : "");
+        if (details?.primaryVenue?.mapUrl) $("mapBtn").href = details.primaryVenue.mapUrl;
 
+        // 2. Photo
+        renderCouplePhoto(details);
+
+        // 3. Links
+        if (typeof calendarUrl !== 'undefined') {
+           $("subscribeBtn").href = new URL(calendarUrl, window.location.href).toString().replace(/^https:/, "webcal:");
+        }
+        if (startIso) renderCountdown($("countdown"), startIso);
+
+        // 4. Schedule
+        const schedule = $("schedule");
+        if (schedule) {
+          schedule.innerHTML = '';
+          schedule.className = "space-y-6 mt-6";
           for (const ev of details.schedule || []) {
             const item = document.createElement("div");
+            item.className = "reveal-entry flex flex-row items-stretch gap-3 sm:gap-6 border-b border-neutral-100 dark:border-neutral-800 pb-6 last:border-0 last:pb-0";
             
-            // KEY CHANGE: "flex-row" is now active on ALL screens (removed flex-col)
-            // This forces the Box to stay on the Left side on mobile.
-            item.className = "flex flex-row items-stretch gap-3 sm:gap-6 border-b border-neutral-100 dark:border-neutral-800 pb-6 last:border-0 last:pb-0";
-
-            const startObj = ev?.start ? new Date(ev.start) : null;
-            
-            // Date Parts
-            const dayNum = startObj ? startObj.getDate() : ""; 
-            const monthShort = startObj ? startObj.toLocaleDateString('en-US', { month: 'short' }).toUpperCase() : ""; 
-            const weekDay = startObj ? startObj.toLocaleDateString('en-US', { weekday: 'short' }).toUpperCase() : ""; 
-            
-            // Time Parts
-            const timeStr = startObj 
-                ? startObj.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) 
-                : "";
+            const d = ev.start ? new Date(ev.start) : null;
+            const dateParts = d ? {
+              day: d.getDate(),
+              month: d.toLocaleDateString('en-US',{month:'short'}).toUpperCase(),
+              week: d.toLocaleDateString('en-US',{weekday:'short'}).toUpperCase(),
+              time: d.toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"})
+            } : { day:"", month:"", week:"", time:"" };
 
             item.innerHTML = `
               <div class="shrink-0 flex flex-col items-center justify-center w-20 py-3 sm:w-28 sm:py-0 rounded-2xl border-2 border-neutral-100 bg-neutral-50 dark:border-neutral-700 dark:bg-neutral-900/50">
-                
                 <div class="flex flex-col items-center justify-center leading-none">
-                  <div class="text-[9px] sm:text-[10px] font-bold tracking-widest text-neutral-500 uppercase mb-1">${monthShort}</div>
-                  <div class="text-2xl sm:text-3xl font-heading font-bold text-neutral-900 dark:text-white">${dayNum}</div>
-                  <div class="text-[9px] sm:text-[10px] font-medium text-neutral-400 mt-1 uppercase">${weekDay}</div>
+                  <div class="text-[9px] sm:text-[10px] font-bold tracking-widest text-neutral-500 uppercase mb-1">${dateParts.month}</div>
+                  <div class="text-2xl sm:text-3xl font-heading font-bold text-neutral-900 dark:text-white">${dateParts.day}</div>
+                  <div class="text-[9px] sm:text-[10px] font-medium text-neutral-400 mt-1 uppercase">${dateParts.week}</div>
                 </div>
-
                 <div class="w-10 sm:w-16 h-px bg-neutral-200 dark:bg-neutral-700 my-2"></div>
-
-                <div class="text-xs sm:text-sm font-bold text-neutral-800 dark:text-neutral-200 text-center px-1">
-                  ${timeStr}
-                </div>
+                <div class="text-xs sm:text-sm font-bold text-neutral-800 dark:text-neutral-200 text-center px-1">${dateParts.time}</div>
               </div>
-              
               <div class="flex-1 flex flex-col sm:flex-row sm:items-start sm:justify-between min-w-0 py-1">
-                
-                <div class="flex flex-col justify-center mb-2 sm:mb-0">
-                  <h3 class="font-heading text-lg sm:text-2xl font-medium text-neutral-900 dark:text-white leading-tight">${ev.title || "Event"}</h3>
-                  
-                  <div class="mt-1.5 text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 line-clamp-2">
-                    ${[ev.locationName, ev.address].filter(Boolean).join(", ")}
-                  </div>
-                  
+                <div class="flex flex-col justify-center mb-2 sm:mb-0 w-full">
+                  <h3 class="font-heading text-lg sm:text-2xl font-medium text-neutral-900 dark:text-white leading-tight">${ev.title||"Event"}</h3>
+                  <div class="mt-1.5 text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 line-clamp-2">${[ev.locationName,ev.address].filter(Boolean).join(", ")}</div>
+                  ${ev.wardrobe ? `<div class="mt-3 flex items-start gap-2 rounded-lg bg-neutral-50 p-2 text-xs sm:text-sm text-neutral-600 dark:bg-neutral-800 dark:text-neutral-300"><span class="text-lg">🎨</span><div><strong class="font-semibold text-neutral-900 dark:text-white">Dress Code:</strong> ${ev.wardrobe}</div></div>` : ""}
                   ${ev.notes ? `<div class="mt-1.5 text-xs sm:text-sm italic text-neutral-500">${ev.notes}</div>` : ""}
                 </div>
-
-                <div class="shrink-0 flex flex-row sm:flex-col gap-4 sm:gap-2 mt-auto sm:mt-0 sm:items-end sm:text-right text-xs sm:text-sm font-medium pt-1">
-                   ${(ev.mapUrl || details?.primaryVenue?.mapUrl) ? `
-                    <div class="flex flex-col">
-                      <span class="hidden sm:block text-[10px] uppercase tracking-wider text-neutral-400 font-bold mb-0.5">Location</span>
-                      <a class="flex items-center gap-1.5 text-neutral-900 dark:text-white hover:underline decoration-neutral-400" 
-                         href="${ev.mapUrl || details?.primaryVenue?.mapUrl}" target="_blank" rel="noopener">
-                         <span>📍 Maps</span>
-                         <span class="hidden sm:inline">↗</span>
-                      </a>
-                    </div>` : ""}
-                   
-                   <div class="flex flex-col sm:mt-2">
-                      <span class="hidden sm:block text-[10px] uppercase tracking-wider text-neutral-400 font-bold mb-0.5">Calendar</span>
-                      <a class="flex items-center gap-1.5 text-neutral-900 dark:text-white hover:underline decoration-neutral-400" 
-                          href="${buildGoogleCalendarLink(ev)}" target="_blank" rel="noopener">
-                          <span>📅 Add to Cal</span>
-                      </a>
-                   </div>
+                <div class="shrink-0 flex flex-row sm:flex-col gap-4 sm:gap-2 mt-auto sm:mt-0 sm:items-end sm:text-right text-xs sm:text-sm font-medium pt-1 sm:pl-4">
+                   ${(ev.mapUrl||details?.primaryVenue?.mapUrl) ? `<div class="flex flex-col"><span class="hidden sm:block text-[10px] uppercase tracking-wider text-neutral-400 font-bold mb-0.5">Location</span><a class="flex items-center gap-1.5 text-neutral-900 dark:text-white hover:underline decoration-neutral-400" href="${ev.mapUrl||details?.primaryVenue?.mapUrl}" target="_blank" rel="noopener"><span>📍 Maps</span><span class="hidden sm:inline">↗</span></a></div>`:""}
+                   <div class="flex flex-col sm:mt-2"><span class="hidden sm:block text-[10px] uppercase tracking-wider text-neutral-400 font-bold mb-0.5">Calendar</span><a class="flex items-center gap-1.5 text-neutral-900 dark:text-white hover:underline decoration-neutral-400" href="${buildGoogleCalendarLink(ev)}" target="_blank" rel="noopener"><span>📅 Add to Cal</span></a></div>
                 </div>
-
-              </div>
-            `;
+              </div>`;
             schedule.appendChild(item);
           }
         }
 
-        // --- 4. Render Updates ---
-        const updates = $("updates");
-        if (updates && updates.style) {
-          updates.innerHTML = "";
-          for (const u of details.updates || []) {
-            const el = document.createElement("div");
-            el.className = "rounded-xl bg-neutral-50 p-4 text-sm dark:bg-white/5 border border-transparent dark:border-neutral-800";
-            el.innerHTML = `
-              <div class="mb-1 text-xs font-bold uppercase tracking-wide text-neutral-400">${u.when ? formatLocal(u.when) : "Update"}</div>
-              <div class="text-neutral-700 dark:text-neutral-300">${u.text || ""}</div>
-            `;
-            updates.appendChild(el);
-          }
-        }
-
-        // --- 5. Render Contacts (CRASH FIX APPLIED) ---
+        // 5. Contacts
         const contacts = $("contacts");
-        if (contacts && contacts.style) {
+        if (contacts) {
           contacts.innerHTML = "";
           contacts.className = "mt-4 grid gap-3 sm:grid-cols-2";
-
           for (const c of details.contacts || []) {
-            const el = document.createElement("div");
-            el.className = "flex items-center gap-3 rounded-xl border p-3 dark:border-neutral-800";
-
-            // FIX: Force convert to string to prevent ".replace is not a function" error
-            const phoneRaw = String(c.phone || ""); 
-            const isPhone = phoneRaw.length > 3; // Basic check
-            const link = isPhone ? `tel:${phoneRaw.replace(/[^\d+]/g, '')}` : "#";
-
-            el.innerHTML = `
-              <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-neutral-100 dark:bg-neutral-800 text-lg">
-                ${c.icon || "📞"}
-              </div>
-              <div class="flex-1 min-w-0">
-                <div class="truncate font-medium text-neutral-900 dark:text-white">${c.name || "Contact"}</div>
-                <div class="truncate text-xs text-neutral-500">${c.role || "Family"}</div>
-              </div>
-              ${isPhone ? `
-                <a href="${link}" class="rounded-full bg-neutral-900 px-3 py-1.5 text-xs font-medium text-white transition-transform hover:scale-105 dark:bg-white dark:text-black">
-                  Call
-                </a>
-              ` : ""}
-            `;
-            contacts.appendChild(el);
+             const el = document.createElement("div");
+             el.className = "flex items-center gap-3 rounded-xl border p-3 dark:border-neutral-800";
+             const ph = String(c.phone||"");
+             const link = ph.length>3 ? `tel:${ph.replace(/[^\d+]/g,'')}` : "#";
+             el.innerHTML = `
+               <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-neutral-100 dark:bg-neutral-800 text-lg">${c.icon||"📞"}</div>
+               <div class="flex-1 min-w-0"><div class="truncate font-medium text-neutral-900 dark:text-white">${c.name||"Contact"}</div><div class="truncate text-xs text-neutral-500">${c.role||""}</div></div>
+               ${ph.length>3 ? `<a href="${link}" class="rounded-full bg-neutral-900 px-3 py-1.5 text-xs font-medium text-white transition-transform hover:scale-105 dark:bg-white dark:text-black">Call</a>` : ""}
+             `;
+             contacts.appendChild(el);
           }
         }
 
         applyTheme(details.theme);
         applyDecor(details);
-        renderCouplePhoto(details);
         renderRsvp(details.rsvp);
-
-      } catch (err) {
-        console.error("CRITICAL RENDER ERROR:", err);
-        // Optional: alert user or show error on screen
-        // alert("Error loading invitation details. Please check console.");
-      }
+        setupScrollObserver(); // Now this function actually exists!
+      } catch (e) { console.error(e); }
     }
 
     async function boot() {
       const lockScreen = $("lockScreen");
       const content = $("protectedContent");
       const input = $("passwordInput");
-      const btn = $("unlockBtn");
       const error = $("errorMsg");
-      const missing = $("missingMsg");
-      const lockHint = $("lockHint");
-
+      
       input?.addEventListener("input", () => error?.classList.add("hidden"));
-
       let DETAILS = null;
-
-      async function loadDetails() {
-        const res = await fetch(detailsUrl, { cache: "no-store" });
-        if (!res.ok) throw new Error("DETAILS_NOT_FOUND");
-        DETAILS = await res.json();
-      }
-
       const storageKey = `weddings-${slug}-unlocked`;
 
-      function showContent() {
-        lockScreen?.classList.add("hidden");
-        content?.classList.remove("hidden");
-      }
-
-      function showLock() {
-        lockScreen?.classList.remove("hidden");
-        content?.classList.add("hidden");
-      }
-
-      function checkPassword(pw) {
-        return DETAILS && String(pw) === String(DETAILS.password);
-      }
-
-      function attemptUnlock() {
-        if (!input || !error) return;
-        if (checkPassword(input.value || "")) {
-          localStorage.setItem(storageKey, "true");
-          showContent();
-          renderInvite(DETAILS);
-        } else {
-          error.classList.remove("hidden");
-        }
-      }
-
       try {
-        await loadDetails();
+        const res = await fetch(detailsUrl, { cache: "no-store" });
+        if (!res.ok) throw new Error("404");
+        DETAILS = await res.json();
+        
+        if (DETAILS.passwordHint) $("lockHint").textContent = DETAILS.passwordHint;
+        
+        const unlock = () => {
+          if (!input || !DETAILS) return;
+          if (String(input.value) === String(DETAILS.password)) {
+            localStorage.setItem(storageKey, "true");
+            lockScreen?.classList.add("hidden");
+            content?.classList.remove("hidden");
+            renderInvite(DETAILS);
+          } else {
+            error?.classList.remove("hidden");
+          }
+        };
 
-        if (DETAILS?.passwordHint && lockHint) lockHint.textContent = DETAILS.passwordHint;
-
-        // Auto-unlock
         if (localStorage.getItem(storageKey) === "true") {
-          showContent();
-          renderInvite(DETAILS);
-          return;
+           lockScreen?.classList.add("hidden");
+           content?.classList.remove("hidden");
+           renderInvite(DETAILS);
+        } else {
+           lockScreen?.classList.remove("hidden");
+           content?.classList.add("hidden");
+           $("unlockBtn")?.addEventListener("click", unlock);
+           input?.addEventListener("keydown", (e) => e.key === "Enter" && unlock());
         }
-
-        btn?.addEventListener("click", attemptUnlock);
-        input?.addEventListener("keydown", (e) => {
-          if (e.key === "Enter") attemptUnlock();
-        });
-
-        showLock();
-      } catch (e) {
-        showLock();
-        missing?.classList.remove("hidden");
+      } catch(e) {
+        lockScreen?.classList.remove("hidden");
+        $("missingMsg")?.classList.remove("hidden");
       }
     }
 

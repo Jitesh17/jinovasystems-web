@@ -1,0 +1,71 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//jiteshgosar.com//Wedding Invite//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:Manish & Manvi Wedding
+X-WR-TIMEZONE:Asia/Kolkata
+BEGIN:VTIMEZONE
+TZID:Asia/Kolkata
+BEGIN:STANDARD
+TZOFFSETFROM:+0530
+TZOFFSETTO:+0530
+TZNAME:IST
+DTSTART:19700101T000000
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+UID:manish-manvi-welcome@jiteshgosar.com
+DTSTAMP:20260113T042936Z
+DTSTART;TZID=Asia/Kolkata:20260214T180000
+DTEND;TZID=Asia/Kolkata:20260214T210000
+SUMMARY:Welcome
+LOCATION:Wedding Venue\, City\, State
+DESCRIPTION:Map: https://maps.google.com/?q=Wedding%20Venue
+END:VEVENT
+BEGIN:VEVENT
+UID:manish-manvi-haldi@jiteshgosar.com
+DTSTAMP:20260113T042936Z
+DTSTART;TZID=Asia/Kolkata:20260215T103000
+DTEND;TZID=Asia/Kolkata:20260215T130000
+SUMMARY:Haldi
+LOCATION:Wedding Venue\, City\, State
+DESCRIPTION:Map: https://maps.google.com/?q=Wedding%20Venue
+END:VEVENT
+BEGIN:VEVENT
+UID:manish-manvi-mehendi@jiteshgosar.com
+DTSTAMP:20260113T042936Z
+DTSTART;TZID=Asia/Kolkata:20260216T160000
+DTEND;TZID=Asia/Kolkata:20260216T200000
+SUMMARY:Mehendi
+LOCATION:Wedding Venue\, City\, State
+DESCRIPTION:Map: https://maps.google.com/?q=Wedding%20Venue
+END:VEVENT
+BEGIN:VEVENT
+UID:manish-manvi-sangeet@jiteshgosar.com
+DTSTAMP:20260113T042936Z
+DTSTART;TZID=Asia/Kolkata:20260217T190000
+DTEND;TZID=Asia/Kolkata:20260217T230000
+SUMMARY:Sangeet
+LOCATION:Wedding Venue\, City\, State
+DESCRIPTION:Map: https://maps.google.com/?q=Wedding%20Venue
+END:VEVENT
+BEGIN:VEVENT
+UID:manish-manvi-wedding@jiteshgosar.com
+DTSTAMP:20260113T042936Z
+DTSTART;TZID=Asia/Kolkata:20260219T110000
+DTEND;TZID=Asia/Kolkata:20260219T150000
+SUMMARY:Wedding Ceremony
+LOCATION:Wedding Venue\, City\, State
+DESCRIPTION:Map: https://maps.google.com/?q=Wedding%20Venue
+END:VEVENT
+BEGIN:VEVENT
+UID:manish-manvi-ceremony@jiteshgosar.com
+DTSTAMP:20260113T042936Z
+DTSTART;TZID=Asia/Kolkata:20260219T110000
+DTEND;TZID=Asia/Kolkata:20260219T130000
+SUMMARY:Wedding Ceremony
+LOCATION:Wedding Venue\, City\, State
+DESCRIPTION:Map: https://maps.google.com/?q=Wedding%20Venue
+END:VEVENT
+END:VCALENDAR

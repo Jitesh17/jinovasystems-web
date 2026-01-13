@@ -1,0 +1,141 @@
+{
+  "password": "123",
+  "passwordHint": "Please contact the family for the password.",
+
+  "coupleNames": "Manish & Manvi",
+  "tagline": "Together with our families, we invite you to celebrate our wedding.",
+  "cityLine": "India",
+
+  "lastUpdated": "2026-01-13T12:00:00+05:30",
+
+  "media": {
+    "couplePhoto": {
+      "enabled": true,
+      "src": "/weddings/assets/manish-manvi/couple.jpg",
+      "alt": "Manish & Manvi",
+      "size": "hero",
+      "style": "cinematic",
+      "position": "50% 10%"
+    }
+  },
+
+  "primaryVenue": {
+    "name": "Wedding Venue",
+    "address": "City, State",
+    "mapUrl": "https://www.google.com/maps/place/Jaipur,+Rajasthan"
+  },
+
+  "primaryEvent": {
+    "id": "wedding",
+    "title": "Wedding Ceremony",
+    "start": "2026-02-19T11:00:00+05:30",
+    "displayDate": "14-19 Feb 2026",
+    "end": "2026-02-19T13:00:00+05:30"
+  },
+
+  "schedule": [
+    {
+      "id": "welcome",
+      "title": "Welcome",
+      "start": "2026-02-14T18:00:00+05:30",
+      "end": "2026-02-14T21:00:00+05:30",
+      "locationName": "Wedding Venue",
+      "address": "City, State",
+      "mapUrl": "https://www.google.com/maps/place/Jaipur,+Rajasthan",
+      "wardrobe": "Comfortable festive wear."
+    },
+    {
+      "id": "haldi",
+      "title": "Haldi",
+      "start": "2026-02-15T10:30:00+05:30",
+      "end": "2026-02-15T13:00:00+05:30",
+      "locationName": "Wedding Venue",
+      "address": "City, State",
+      "mapUrl": "https://www.google.com/maps/place/Jaipur,+Rajasthan",
+      "wardrobe": "Yellow or light festive outfits."
+    },
+    {
+      "id": "mehendi",
+      "title": "Mehendi",
+      "start": "2026-02-16T16:00:00+05:30",
+      "end": "2026-02-16T20:00:00+05:30",
+      "locationName": "Wedding Venue",
+      "address": "City, State",
+      "mapUrl": "https://www.google.com/maps/place/Jaipur,+Rajasthan",
+      "wardrobe": "Bright Indian festive wear."
+    },
+    {
+      "id": "sangeet",
+      "title": "Sangeet",
+      "start": "2026-02-17T19:00:00+05:30",
+      "end": "2026-02-17T23:00:00+05:30",
+      "locationName": "Wedding Venue",
+      "address": "City, State",
+      "mapUrl": "https://www.google.com/maps/place/Jaipur,+Rajasthan",
+      "wardrobe": "Glam Indo-western or festive."
+    },
+    {
+      "id": "wedding",
+      "title": "Wedding Ceremony",
+      "start": "2026-02-19T11:00:00+05:30",
+      "end": "2026-02-19T15:00:00+05:30",
+      "locationName": "Wedding Venue",
+      "address": "City, State",
+      "mapUrl": "https://www.google.com/maps/place/Jaipur,+Rajasthan",
+      "wardrobe": "Traditional wedding attire."
+    }
+  ],
+
+  "updates": [
+    {
+      "when": "2026-01-13T12:00:00+05:30",
+      "text": "Initial schedule added. Venue and exact timings can be refined."
+    }
+  ],
+
+  "contacts": [
+    {
+      "name": "Manish",
+      "role": "Groom",
+      "phone": "+91-XXXXXXXXXX"
+    },
+    {
+      "name": "Manvi",
+      "role": "Bride",
+      "phone": "+91-XXXXXXXXXX"
+    },
+    {
+      "name": "Jitesh Gosar",
+      "role": "Friend & Site Admin",
+      "phone": "+91-8517069572",
+      "icon": "💻"
+    }
+  ],
+
+  "rsvp": {
+    "enabled": true,
+    "mode": "embed",
+    "showButton": true,
+    "formUrl": "https://forms.gle/A48zpTzCZF2mhXsJA",
+    "embedUrl": "https://docs.google.com/forms/d/e/1FAIpQLSfjXnYDZzPmQ37jgpzSU1iMTMW1eAu3C9jCP_vjVlQ-_R4vkA/viewform?embedded=true",
+    "deadline": "2026-02-10T23:59:00+05:30",
+    "title": "RSVP",
+    "buttonText": "RSVP (open form here)",
+    "openInNewTabText": "Open in Google Forms"
+  },
+
+  "theme": {
+    "primaryColor": "#d4af37",
+    "secondaryColor": "#fffcf5",
+    "decor": {
+      "enabled": true,
+      "mode": "corners",
+      "imageUrl": "/weddings/assets/decor-corner-2.png",
+      "size": 340,
+      "opacityLight": 0.86,
+      "opacityDark": 0.80,
+      "rotate": true,
+      "baseRotation": 0
+    }
+  }
+}
