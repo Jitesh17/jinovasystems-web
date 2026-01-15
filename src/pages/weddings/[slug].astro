@@ -94,8 +94,7 @@ const pageTitle = `Wedding Invitation - ${slug}`;
       </div>
 
       <div class="card-joy relative z-10 mx-auto max-w-3xl shadow-2xl">
-        <div class="rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm dark:border-neutral-800 dark:bg-neutral-900/90 backdrop-blur-sm">
-          <div class="text-center space-y-4 mt-6">
+        <div class="p-6">
             <div id="couplePhotoWrap" class="hidden flex justify-center mb-6">
               <img 
                 id="couplePhoto" 
@@ -103,8 +102,10 @@ const pageTitle = `Wedding Invitation - ${slug}`;
                 loading="eager"
               />
             </div>
-            <h1 id="coupleNames" class="font-heading text-6xl sm:text-7xl font-medium tracking-wide text-neutral-900 dark:text-white leading-tight">
-              Loading...
+            <div class="text-center space-y-4 mt-6">
+
+            <h1 id="coupleNames" class="font-heading text-6xl sm:text-7xl font-medium tracking-wide text-neutral-900 dark:text-white leading-tight animate-pulse">
+              Wedding Invitation
             </h1>
             <p id="tagline" class="font-heading text-xl italic text-neutral-600 dark:text-neutral-400"></p>
             
@@ -198,7 +199,6 @@ const pageTitle = `Wedding Invitation - ${slug}`;
       return d.toLocaleString(undefined, { weekday: "short", year: "numeric", month: "short", day: "2-digit", hour: "2-digit", minute: "2-digit" });
     }
 
-    // --- Animation Helper (THIS WAS MISSING) ---
     function setupScrollObserver() {
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
@@ -243,7 +243,6 @@ const pageTitle = `Wedding Invitation - ${slug}`;
       const start = new Date(ev?.start);
       const end = new Date(ev?.end);
       if (isNaN(start) || isNaN(end)) return "https://calendar.google.com/";
-      
       const fmt = (d) => d.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
       const details = encodeURIComponent(String(ev?.notes || ""));
       const location = encodeURIComponent([ev?.locationName, ev?.address].filter(Boolean).join(", "));
@@ -256,7 +255,6 @@ const pageTitle = `Wedding Invitation - ${slug}`;
       wrapper.style.backgroundImage = "";
       wrapper.classList.remove("bg-gradient-to-br");
       if (!theme) return;
-
       if (theme.background === "gradient" && theme.gradient) {
         wrapper.classList.add("bg-gradient-to-br");
         theme.gradient.split(" ").forEach(c => wrapper.classList.add(c));
@@ -270,44 +268,99 @@ const pageTitle = `Wedding Invitation - ${slug}`;
     function applyDecor(details) {
       const root = $("decorCorners");
       if (!root) return;
-      
-      // Clear previous corners
-      ["TL","TR","BL","BR"].forEach(k => {
-          const el = $(`decor${k}`);
-          if(el) { el.style = ""; el.style.backgroundRepeat = "no-repeat"; }
-      });
+      ["TL","TR","BL","BR"].forEach(k => { const el = $(`decor${k}`); if(el) { el.style = ""; el.style.backgroundRepeat = "no-repeat"; } });
       root.classList.add("hidden");
-
       const d = details?.decor || details?.theme?.decor;
       if (!d || d.enabled !== true) return;
-
       const size = d.size || 360;
       const opacity = document.documentElement.classList.contains("dark") ? (d.opacityDark||0.16) : (d.opacityLight||0.28);
       const baseRot = d.rotation || 0;
       const autoRot = d.rotate !== false;
-
       const setCorner = (id, key, offset) => {
         const el = $(id);
         const url = d.corners?.[key]?.imageUrl || d.imageUrl;
         if (!el || !url) return;
         const rot = baseRot + offset + (Number(d.corners?.[key]?.rotation) || 0);
-        el.style.width = `${size}px`;
-        el.style.height = `${size}px`;
-        el.style.opacity = opacity;
-        el.style.backgroundImage = `url('${resolveAssetUrl(url)}')`;
-        el.style.backgroundSize = "contain";
-        el.style.backgroundPosition = "center";
-        el.style.transform = `rotate(${rot}deg)`;
+        el.style.width = `${size}px`; el.style.height = `${size}px`; el.style.opacity = opacity;
+        el.style.backgroundImage = `url('${resolveAssetUrl(url)}')`; el.style.backgroundSize = "contain";
+        el.style.backgroundPosition = "center"; el.style.transform = `rotate(${rot}deg)`;
         root.classList.remove("hidden");
       };
-
-      setCorner("decorTL", "tl", 0);
-      setCorner("decorTR", "tr", autoRot ? 90 : 0);
-      setCorner("decorBL", "bl", autoRot ? -90 : 0);
-      setCorner("decorBR", "br", autoRot ? 180 : 0);
+      setCorner("decorTL", "tl", 0); setCorner("decorTR", "tr", autoRot ? 90 : 0);
+      setCorner("decorBL", "bl", autoRot ? -90 : 0); setCorner("decorBR", "br", autoRot ? 180 : 0);
     }
 
-    function renderCouplePhoto(details) {
+function renderRsvp(rsvp) {
+      const section = $("rsvpSection");
+      const button = $("rsvpButton");
+      const btnWrap = $("rsvpButtonWrap");
+      const embedWrap = $("rsvpEmbedWrap");
+      const iframe = $("rsvpIframe");
+      const dl = $("rsvpDeadlineText");
+
+      if (!section || !button) return;
+      section.style.display = "none";
+      
+      if (!rsvp || rsvp.enabled !== true) return;
+      section.style.display = "block";
+      
+      $("rsvpTitle").textContent = rsvp.title || "RSVP";
+      
+      if (rsvp.deadline) {
+        dl.textContent = `RSVP deadline: ${formatLocal(rsvp.deadline)}`;
+        dl.style.display = "block";
+      } else {
+        dl.style.display = "none";
+      }
+
+      // Maroon Styling (Coordinated with your photo)
+      button.className = "inline-block rounded-full px-10 py-3 text-sm font-semibold text-white transition-all hover:scale-105 shadow-lg bg-[#8b0000] hover:bg-[#a00000] shadow-rose-900/20 border-0 cursor-pointer";
+
+      const isEmbed = String(rsvp.mode).toLowerCase() === "embed" && rsvp.embedUrl;
+
+      if (isEmbed) {
+        btnWrap.style.display = "block";
+        button.textContent = rsvp.buttonText || "RSVP Now";
+        
+        button.onclick = (e) => {
+          e.preventDefault();
+          const isOpening = embedWrap.style.display === "none";
+          
+          if (isOpening) {
+            // Open logic
+            embedWrap.style.display = "block";
+            button.textContent = "Close RSVP Form";
+            button.classList.replace("bg-[#8b0000]", "bg-neutral-500"); // Change color when open
+            button.classList.replace("hover:bg-[#a00000]", "hover:bg-neutral-600");
+            
+            if (!iframe.src) iframe.src = rsvp.embedUrl;
+            embedWrap.scrollIntoView({ behavior: "smooth", block: "start" });
+          } else {
+            // Close logic
+            embedWrap.style.display = "none";
+            button.textContent = rsvp.buttonText || "RSVP Now";
+            button.classList.replace("bg-neutral-500", "bg-[#8b0000]");
+            button.classList.replace("hover:bg-neutral-600", "hover:bg-[#a00000]");
+            section.scrollIntoView({ behavior: "smooth", block: "start" });
+          }
+        };
+      } else if (rsvp.formUrl) {
+        // Standard Link Mode
+        btnWrap.style.display = "block";
+        button.textContent = rsvp.buttonText || "RSVP via Google Forms";
+        button.href = rsvp.formUrl;
+        button.target = "_blank";
+        button.onclick = null;
+      }
+      
+      if (rsvp.formUrl) {
+        const link = $("rsvpOpenInNewTab");
+        link.href = rsvp.formUrl;
+        link.className = "underline text-xs text-neutral-500 hover:text-[#8b0000] transition-colors";
+      }
+    }
+
+function renderCouplePhoto(details) {
       const wrap = $("couplePhotoWrap");
       const img = $("couplePhoto");
       if (!wrap || !img) return;
@@ -315,7 +368,6 @@ const pageTitle = `Wedding Invitation - ${slug}`;
       wrap.classList.add("hidden");
       img.removeAttribute("src");
       img.removeAttribute("style");
-      
       wrap.className = "hidden flex justify-center mb-6"; 
       img.className = "object-cover transition-transform duration-700 hover:scale-[1.02]";
 
@@ -326,17 +378,18 @@ const pageTitle = `Wedding Invitation - ${slug}`;
       img.alt = photo.alt || "";
       const size = photo.size;
 
-      // Position Logic (Supports "50% 75%")
-      const pos = photo.position || (size === 'hero' ? 'top' : 'center');
+      // Adjusted default crop to pull the couple higher up
+      const pos = photo.position || (size === 'hero' ? 'center 30%' : 'center');
       const tailwindMap = { "top": "object-top", "center": "object-center", "bottom": "object-bottom" };
       if (tailwindMap[pos]) img.classList.add(tailwindMap[pos]);
       else img.style.objectPosition = pos;
 
-      // Size Logic
       if (size === 'hero') {
         wrap.classList.remove("mb-6");
         wrap.classList.add("-mx-6", "-mt-6", "mb-8", "rounded-t-2xl", "overflow-hidden");
-        img.className += " w-full h-[450px] sm:h-[500px]"; 
+        
+        // FIX: Reduced mobile height (h-[380px]) vs laptop height (h-[550px])
+        img.className += " w-full h-[380px] sm:h-[550px]"; 
       } else if (size === 'full') {
         img.style.width = '100%';
         img.style.maxWidth = '600px'; 
@@ -348,62 +401,16 @@ const pageTitle = `Wedding Invitation - ${slug}`;
         img.classList.add((photo.shape === "rounded") ? "rounded-2xl" : "rounded-full");
       }
 
-      // Decor Logic
       if (photo.shadow !== false) img.classList.add("shadow-2xl");
       if (photo.border !== false && size !== 'hero') {
          img.classList.add("border-4", "border-white", "dark:border-neutral-800");
       }
-
       wrap.classList.remove("hidden");
-    }
-
-    function renderRsvp(rsvp) {
-      const section = $("rsvpSection");
-      if (!section) return;
-      section.style.display = "none";
-      
-      if (!rsvp || rsvp.enabled !== true) return;
-      section.style.display = "block";
-      
-      $("rsvpTitle").textContent = rsvp.title || "RSVP";
-      if (rsvp.deadline) {
-        const dl = $("rsvpDeadlineText");
-        dl.textContent = `RSVP deadline: ${formatLocal(rsvp.deadline)}`;
-        dl.style.display = "block";
-      }
-
-      const btnWrap = $("rsvpButtonWrap");
-      const embedWrap = $("rsvpEmbedWrap");
-      const iframe = $("rsvpIframe");
-      
-      btnWrap.style.display = "none";
-      embedWrap.style.display = "none";
-
-      if (String(rsvp.mode).toLowerCase() === "embed" && rsvp.embedUrl) {
-         if (rsvp.showButton !== false) {
-           btnWrap.style.display = "block";
-           $("rsvpButton").textContent = rsvp.buttonText || "Open RSVP";
-           $("rsvpButton").onclick = (e) => {
-             e.preventDefault();
-             embedWrap.style.display = "block";
-             iframe.src = rsvp.embedUrl;
-           };
-         } else {
-           embedWrap.style.display = "block";
-           iframe.src = rsvp.embedUrl;
-         }
-      } else if (rsvp.formUrl) {
-         btnWrap.style.display = "block";
-         $("rsvpButton").href = rsvp.formUrl;
-         $("rsvpButton").target = "_blank";
-      }
-      
-      if (rsvp.formUrl) $("rsvpOpenInNewTab").href = rsvp.formUrl;
     }
 
     function renderInvite(details) {
       try {
-        // 1. Text
+        // 1. Text Details
         $("coupleNames").textContent = details.coupleNames || "";
         $("tagline").textContent = details.tagline || "";
         $("cityLine").textContent = details.cityLine || "";
@@ -412,10 +419,46 @@ const pageTitle = `Wedding Invitation - ${slug}`;
         $("weddingDate").textContent = details?.primaryEvent?.displayDate || (startIso ? formatLocal(startIso) : "");
         if (details?.primaryVenue?.mapUrl) $("mapBtn").href = details.primaryVenue.mapUrl;
 
-        // 2. Photo
+        // 2. Photo Layout
         renderCouplePhoto(details);
 
-        // 3. Links
+        // --- UPDATED: CINEMATIC MODE COLOR FIX ---
+        const photoConfig = details.media?.couplePhoto;
+        const textContainer = $("coupleNames").parentElement; 
+        const photoWrap = $("couplePhotoWrap");
+
+        if (textContainer) {
+          textContainer.style.marginTop = "";
+          textContainer.classList.remove("relative", "z-20", "px-4", "pb-4");
+          $("coupleNames").className = "font-heading text-6xl sm:text-7xl font-medium tracking-wide leading-tight text-neutral-900 dark:text-white";
+          $("tagline").className = "font-heading text-xl italic text-neutral-600 dark:text-neutral-400";
+          
+          const oldG = photoWrap?.querySelectorAll('.cinematic-gradient');
+          if (oldG) oldG.forEach(g => g.remove());
+        }
+
+        if (photoConfig?.style === 'cinematic' && photoConfig?.enabled && photoWrap && textContainer) {
+          const gradient = document.createElement('div');
+          
+          // FIX: Changed dark mode 'from-black' to 'from-[#171717]' (Neutral-900) 
+          // to match the background of the card perfectly.
+          gradient.className = "cinematic-gradient absolute inset-0 bg-gradient-to-t from-white via-white/30 dark:from-[#171717] dark:via-[#171717]/40 to-transparent pointer-events-none rounded-t-2xl";
+          
+          photoWrap.classList.add("relative", "overflow-hidden"); 
+          photoWrap.appendChild(gradient);
+
+          // Use Tailwind variants for text colors
+          $("coupleNames").className = "font-heading text-6xl sm:text-7xl font-medium tracking-wide leading-tight text-neutral-900 dark:text-white drop-shadow-none dark:drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)]";
+          $("tagline").className = "font-heading text-xl italic text-neutral-800 dark:text-neutral-200 dark:drop-shadow-md";
+
+          // Pull text over photo
+          textContainer.style.marginTop = "-140px"; 
+          textContainer.classList.add("relative", "z-20", "px-4", "pb-4");
+        }
+        // ... rest of the function remains the same ...
+        // ------------------------------------------------
+
+        // 3. Components
         if (typeof calendarUrl !== 'undefined') {
            $("subscribeBtn").href = new URL(calendarUrl, window.location.href).toString().replace(/^https:/, "webcal:");
         }
@@ -424,35 +467,33 @@ const pageTitle = `Wedding Invitation - ${slug}`;
         // 4. Schedule
         const schedule = $("schedule");
         if (schedule) {
-          schedule.innerHTML = '';
-          schedule.className = "space-y-6 mt-6";
+          schedule.innerHTML = ''; schedule.className = "space-y-6 mt-6";
           for (const ev of details.schedule || []) {
             const item = document.createElement("div");
             item.className = "reveal-entry flex flex-row items-stretch gap-3 sm:gap-6 border-b border-neutral-100 dark:border-neutral-800 pb-6 last:border-0 last:pb-0";
-            
             const d = ev.start ? new Date(ev.start) : null;
-            const dateParts = d ? {
-              day: d.getDate(),
-              month: d.toLocaleDateString('en-US',{month:'short'}).toUpperCase(),
-              week: d.toLocaleDateString('en-US',{weekday:'short'}).toUpperCase(),
-              time: d.toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"})
-            } : { day:"", month:"", week:"", time:"" };
+            const dp = d ? { day: d.getDate(), month: d.toLocaleDateString('en-US',{month:'short'}).toUpperCase(), week: d.toLocaleDateString('en-US',{weekday:'short'}).toUpperCase(), time: d.toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"}) } : { day:"", month:"", week:"", time:"" };
 
             item.innerHTML = `
               <div class="shrink-0 flex flex-col items-center justify-center w-20 py-3 sm:w-28 sm:py-0 rounded-2xl border-2 border-neutral-100 bg-neutral-50 dark:border-neutral-700 dark:bg-neutral-900/50">
                 <div class="flex flex-col items-center justify-center leading-none">
-                  <div class="text-[9px] sm:text-[10px] font-bold tracking-widest text-neutral-500 uppercase mb-1">${dateParts.month}</div>
-                  <div class="text-2xl sm:text-3xl font-heading font-bold text-neutral-900 dark:text-white">${dateParts.day}</div>
-                  <div class="text-[9px] sm:text-[10px] font-medium text-neutral-400 mt-1 uppercase">${dateParts.week}</div>
+                  <div class="text-[9px] sm:text-[10px] font-bold tracking-widest text-neutral-500 uppercase mb-1">${dp.month}</div>
+                  <div class="text-2xl sm:text-3xl font-heading font-bold text-neutral-900 dark:text-white">${dp.day}</div>
+                  <div class="text-[9px] sm:text-[10px] font-medium text-neutral-400 mt-1 uppercase">${dp.week}</div>
                 </div>
                 <div class="w-10 sm:w-16 h-px bg-neutral-200 dark:bg-neutral-700 my-2"></div>
-                <div class="text-xs sm:text-sm font-bold text-neutral-800 dark:text-neutral-200 text-center px-1">${dateParts.time}</div>
+                <div class="text-xs sm:text-sm font-bold text-neutral-800 dark:text-neutral-200 text-center px-1">${dp.time}</div>
               </div>
               <div class="flex-1 flex flex-col sm:flex-row sm:items-start sm:justify-between min-w-0 py-1">
                 <div class="flex flex-col justify-center mb-2 sm:mb-0 w-full">
                   <h3 class="font-heading text-lg sm:text-2xl font-medium text-neutral-900 dark:text-white leading-tight">${ev.title||"Event"}</h3>
                   <div class="mt-1.5 text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 line-clamp-2">${[ev.locationName,ev.address].filter(Boolean).join(", ")}</div>
-                  ${ev.wardrobe ? `<div class="mt-3 flex items-start gap-2 rounded-lg bg-neutral-50 p-2 text-xs sm:text-sm text-neutral-600 dark:bg-neutral-800 dark:text-neutral-300"><span class="text-lg">🎨</span><div><strong class="font-semibold text-neutral-900 dark:text-white">Dress Code:</strong> ${ev.wardrobe}</div></div>` : ""}
+                  ${ev.wardrobe ? `
+                    <div class="mt-3 flex items-start gap-2 rounded-lg bg-neutral-50 p-2 text-xs sm:text-sm text-neutral-600 dark:bg-neutral-800 dark:text-neutral-300">
+                      <span class="text-lg">${ev.wardrobeIcon || '👔'}</span>
+                      <div><strong class="font-semibold text-neutral-900 dark:text-white">Dress Code:</strong> ${ev.wardrobe}</div>
+                    </div>
+                  ` : ""}                  
                   ${ev.notes ? `<div class="mt-1.5 text-xs sm:text-sm italic text-neutral-500">${ev.notes}</div>` : ""}
                 </div>
                 <div class="shrink-0 flex flex-row sm:flex-col gap-4 sm:gap-2 mt-auto sm:mt-0 sm:items-end sm:text-right text-xs sm:text-sm font-medium pt-1 sm:pl-4">
@@ -467,13 +508,10 @@ const pageTitle = `Wedding Invitation - ${slug}`;
         // 5. Contacts
         const contacts = $("contacts");
         if (contacts) {
-          contacts.innerHTML = "";
-          contacts.className = "mt-4 grid gap-3 sm:grid-cols-2";
+          contacts.innerHTML = ""; contacts.className = "mt-4 grid gap-3 sm:grid-cols-2";
           for (const c of details.contacts || []) {
-             const el = document.createElement("div");
-             el.className = "flex items-center gap-3 rounded-xl border p-3 dark:border-neutral-800";
-             const ph = String(c.phone||"");
-             const link = ph.length>3 ? `tel:${ph.replace(/[^\d+]/g,'')}` : "#";
+             const el = document.createElement("div"); el.className = "flex items-center gap-3 rounded-xl border p-3 dark:border-neutral-800";
+             const ph = String(c.phone||""); const link = ph.length>3 ? `tel:${ph.replace(/[^\d+]/g,'')}` : "#";
              el.innerHTML = `
                <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-neutral-100 dark:bg-neutral-800 text-lg">${c.icon||"📞"}</div>
                <div class="flex-1 min-w-0"><div class="truncate font-medium text-neutral-900 dark:text-white">${c.name||"Contact"}</div><div class="truncate text-xs text-neutral-500">${c.role||""}</div></div>
@@ -483,28 +521,36 @@ const pageTitle = `Wedding Invitation - ${slug}`;
           }
         }
 
-        applyTheme(details.theme);
-        applyDecor(details);
-        renderRsvp(details.rsvp);
-        setupScrollObserver(); // Now this function actually exists!
+        applyTheme(details.theme); applyDecor(details); renderRsvp(details.rsvp); setupScrollObserver(); 
       } catch (e) { console.error(e); }
     }
 
-    async function boot() {
+async function boot() {
       const lockScreen = $("lockScreen");
       const content = $("protectedContent");
       const input = $("passwordInput");
       const error = $("errorMsg");
-      
-      input?.addEventListener("input", () => error?.classList.add("hidden"));
-      let DETAILS = null;
       const storageKey = `weddings-${slug}-unlocked`;
+
+      let DETAILS = null;
 
       try {
         const res = await fetch(detailsUrl, { cache: "no-store" });
         if (!res.ok) throw new Error("404");
         DETAILS = await res.json();
-        
+
+        // --- NEW: CHECK IF PASSWORD IS OPTIONAL ---
+        const passwordRequired = DETAILS.password !== null && DETAILS.password !== "";
+
+        if (!passwordRequired) {
+          // If password is null or empty, skip lock screen entirely
+          lockScreen?.classList.add("hidden");
+          content?.classList.remove("hidden");
+          renderInvite(DETAILS);
+          return;
+        }
+
+        // --- STANDARD LOCK LOGIC ---
         if (DETAILS.passwordHint) $("lockHint").textContent = DETAILS.passwordHint;
         
         const unlock = () => {
@@ -534,7 +580,7 @@ const pageTitle = `Wedding Invitation - ${slug}`;
         $("missingMsg")?.classList.remove("hidden");
       }
     }
-
     boot();
   </script>
 </WeddingLayout>
+

@@ -4,7 +4,7 @@
 
   "coupleNames": "Manish & Manvi",
   "tagline": "Together with our families, we invite you to celebrate our wedding.",
-  "cityLine": "India",
+  "cityLine": "Jaipur, India",
 
   "lastUpdated": "2026-01-13T12:00:00+05:30",
 
@@ -35,54 +35,94 @@
 
   "schedule": [
     {
-      "id": "welcome",
-      "title": "Welcome",
-      "start": "2026-02-14T18:00:00+05:30",
-      "end": "2026-02-14T21:00:00+05:30",
-      "locationName": "Wedding Venue",
-      "address": "City, State",
-      "mapUrl": "https://www.google.com/maps/place/Jaipur,+Rajasthan",
-      "wardrobe": "Comfortable festive wear."
+      "id": "lagan-teeka",
+      "title": "Lagan Teeka",
+      "start": "2026-02-15T14:00:00+05:30",
+      "end": "2026-02-15T15:30:00+05:30",
+      "locationName": "Sarayu Mahal",
+      "address": "Ramnagariya, Jagatpura, Jaipur",
+      "mapUrl": "https://maps.app.goo.gl/bHjyj2hNc3uvLvrv9?g_st=iw",
+      "notes": "Sunday, 15th February 2026"
     },
     {
-      "id": "haldi",
-      "title": "Haldi",
-      "start": "2026-02-15T10:30:00+05:30",
-      "end": "2026-02-15T13:00:00+05:30",
-      "locationName": "Wedding Venue",
-      "address": "City, State",
-      "mapUrl": "https://www.google.com/maps/place/Jaipur,+Rajasthan",
-      "wardrobe": "Yellow or light festive outfits."
+      "id": "lagan-teeka-lunch",
+      "title": "Lunch",
+      "start": "2026-02-15T16:00:00+05:30",
+      "end": "2026-02-15T18:00:00+05:30",
+      "locationName": "Sarayu Mahal",
+      "address": "Ramnagariya, Jagatpura, Jaipur",
+      "mapUrl": "https://maps.app.goo.gl/bHjyj2hNc3uvLvrv9?g_st=iw",
+      "notes": "Lunch at 4 PM"
     },
     {
-      "id": "mehendi",
-      "title": "Mehendi",
-      "start": "2026-02-16T16:00:00+05:30",
-      "end": "2026-02-16T20:00:00+05:30",
-      "locationName": "Wedding Venue",
-      "address": "City, State",
-      "mapUrl": "https://www.google.com/maps/place/Jaipur,+Rajasthan",
-      "wardrobe": "Bright Indian festive wear."
+      "id": "tel-vinayak",
+      "title": "Tel Vinayak (तेल विनायक)",
+      "start": "2026-02-17T10:00:00+05:30",
+      "end": "2026-02-17T12:00:00+05:30",
+      "locationName": "Family Residence",
+      "address": "Kalyan Patel ki Dhani, Village Rahuwas, Dausa",
+      "mapUrl": "https://maps.app.goo.gl/VxGJRDaJp3e8KJns6?g_st=ic",
+      "notes": "प्रातः 10 बजे"
     },
     {
-      "id": "sangeet",
-      "title": "Sangeet",
+      "id": "preetibhoj-lunch",
+      "title": "Lunch (Preetibhoj / प्रीतिभोज)",
+      "start": "2026-02-17T15:00:00+05:30",
+      "end": "2026-02-17T17:00:00+05:30",
+      "locationName": "Family Residence",
+      "address": "Kalyan Patel ki Dhani, Village Rahuwas, Dausa",
+      "mapUrl": "https://maps.app.goo.gl/VxGJRDaJp3e8KJns6?g_st=ic",
+      "notes": "दोपहर 3 बजे से"
+    },
+    {
+      "id": "chaak",
+      "title": "Chaak (चाक)",
+      "start": "2026-02-17T17:00:00+05:30",
+      "end": "2026-02-17T18:00:00+05:30",
+      "locationName": "Family Residence",
+      "address": "Kalyan Patel ki Dhani, Village Rahuwas, Dausa",
+      "mapUrl": "https://maps.app.goo.gl/VxGJRDaJp3e8KJns6?g_st=ic",
+      "notes": "सांय 5 बजे"
+    },
+    {
+      "id": "bhaat",
+      "title": "Bhaat (भात)",
       "start": "2026-02-17T19:00:00+05:30",
-      "end": "2026-02-17T23:00:00+05:30",
-      "locationName": "Wedding Venue",
-      "address": "City, State",
-      "mapUrl": "https://www.google.com/maps/place/Jaipur,+Rajasthan",
-      "wardrobe": "Glam Indo-western or festive."
+      "end": "2026-02-17T21:00:00+05:30",
+      "locationName": "Family Residence",
+      "address": "Kalyan Patel ki Dhani, Village Rahuwas, Dausa",
+      "mapUrl": "https://maps.app.goo.gl/VxGJRDaJp3e8KJns6?g_st=ic",
+      "notes": "रात 7 बजे"
     },
     {
-      "id": "wedding",
-      "title": "Wedding Ceremony",
-      "start": "2026-02-19T11:00:00+05:30",
-      "end": "2026-02-19T15:00:00+05:30",
-      "locationName": "Wedding Venue",
-      "address": "City, State",
-      "mapUrl": "https://www.google.com/maps/place/Jaipur,+Rajasthan",
-      "wardrobe": "Traditional wedding attire."
+      "id": "baraat-departure",
+      "title": "Baraat Departure",
+      "start": "2026-02-19T17:00:00+05:30",
+      "end": "2026-02-19T18:00:00+05:30",
+      "locationName": "Family Residence",
+      "address": "Kalyan Patel ki Dhani, Village Rahuwas, Dausa",
+      "mapUrl": "https://maps.app.goo.gl/VxGJRDaJp3e8KJns6?g_st=ic",
+      "notes": "Baraat will depart at 5 PM from Rahuwas, Dausa for the wedding venue."
+    },
+    {
+      "id": "wedding-dinner",
+      "title": "Dinner",
+      "start": "2026-02-19T19:00:00+05:30",
+      "end": "2026-02-19T21:00:00+05:30",
+      "locationName": "Amara Wedding Banquet",
+      "address": "Opp New RTO, Jagatpura, Jaipur",
+      "mapUrl": "https://maps.app.goo.gl/SYvoFd9sdQpq6WMz8?g_st=ic",
+      "notes": "Thursday, 19th February 2026"
+    },
+    {
+      "id": "marriage-ceremony",
+      "title": "Marriage Ceremony",
+      "start": "2026-02-19T21:00:00+05:30",
+      "end": "2026-02-19T23:30:00+05:30",
+      "locationName": "Amara Wedding Banquet",
+      "address": "Opp New RTO, Jagatpura, Jaipur",
+      "mapUrl": "https://maps.app.goo.gl/SYvoFd9sdQpq6WMz8?g_st=ic",
+      "notes": "Ceremony timings are approximated for calendar convenience."
     }
   ],
 

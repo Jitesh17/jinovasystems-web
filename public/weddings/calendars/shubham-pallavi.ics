@@ -16,7 +16,7 @@ END:STANDARD
 END:VTIMEZONE
 BEGIN:VEVENT
 UID:shubham-pallavi-tilak-lagnaotsav@jiteshgosar.com
-DTSTAMP:20260113T042936Z
+DTSTAMP:20260115T061753Z
 DTSTART;TZID=Asia/Kolkata:20260204T160000
 DTEND;TZID=Asia/Kolkata:20260204T180000
 SUMMARY:Lagnaotsav (Tilak)
@@ -25,7 +25,7 @@ DESCRIPTION:Map: https://maps.app.goo.gl/2vx7FMJnCerpMgiLA
 END:VEVENT
 BEGIN:VEVENT
 UID:shubham-pallavi-matrika-mandapachchadan@jiteshgosar.com
-DTSTAMP:20260113T042936Z
+DTSTAMP:20260115T061753Z
 DTSTART;TZID=Asia/Kolkata:20260205T100000
 DTEND;TZID=Asia/Kolkata:20260205T120000
 SUMMARY:Matrika Pujan & Mandapachchadan
@@ -34,7 +34,7 @@ DESCRIPTION:Map: https://maps.app.goo.gl/2vx7FMJnCerpMgiLA
 END:VEVENT
 BEGIN:VEVENT
 UID:shubham-pallavi-sagai-haldi@jiteshgosar.com
-DTSTAMP:20260113T042936Z
+DTSTAMP:20260115T061753Z
 DTSTART;TZID=Asia/Kolkata:20260207T110000
 DTEND;TZID=Asia/Kolkata:20260207T150000
 SUMMARY:Engagement & Haldi
@@ -43,7 +43,7 @@ DESCRIPTION:Map: https://maps.google.com/?q=Taj%20Usha%20Kiran%20Palace%20Gwalio
 END:VEVENT
 BEGIN:VEVENT
 UID:shubham-pallavi-sangeet@jiteshgosar.com
-DTSTAMP:20260113T042936Z
+DTSTAMP:20260115T061753Z
 DTSTART;TZID=Asia/Kolkata:20260207T190000
 DTEND;TZID=Asia/Kolkata:20260208T240000
 SUMMARY:Sangeet
@@ -52,7 +52,7 @@ DESCRIPTION:Map: https://maps.google.com/?q=Taj%20Usha%20Kiran%20Palace%20Gwalio
 END:VEVENT
 BEGIN:VEVENT
 UID:shubham-pallavi-saat-phere-pani-grahan@jiteshgosar.com
-DTSTAMP:20260113T042936Z
+DTSTAMP:20260115T061753Z
 DTSTART;TZID=Asia/Kolkata:20260208T110000
 DTEND;TZID=Asia/Kolkata:20260208T150000
 SUMMARY:Wedding Ceremony (Saat Phere and Marathi Wedding)
@@ -61,7 +61,7 @@ DESCRIPTION:Map: https://maps.google.com/?q=Taj%20Usha%20Kiran%20Palace%20Gwalio
 END:VEVENT
 BEGIN:VEVENT
 UID:shubham-pallavi-aashirwad-samaroh@jiteshgosar.com
-DTSTAMP:20260113T042936Z
+DTSTAMP:20260115T061753Z
 DTSTART;TZID=Asia/Kolkata:20260208T190000
 DTEND;TZID=Asia/Kolkata:20260208T230000
 SUMMARY:Reception
@@ -70,7 +70,7 @@ DESCRIPTION:Map: https://maps.google.com/?q=Taj%20Usha%20Kiran%20Palace%20Gwalio
 END:VEVENT
 BEGIN:VEVENT
 UID:shubham-pallavi-ceremony@jiteshgosar.com
-DTSTAMP:20260113T042936Z
+DTSTAMP:20260115T061753Z
 DTSTART;TZID=Asia/Kolkata:20260208T110000
 DTEND;TZID=Asia/Kolkata:20260208T130000
 SUMMARY:Pani Grahan Sanskar (Saat Phere)

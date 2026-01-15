@@ -15,57 +15,93 @@ DTSTART:19700101T000000
 END:STANDARD
 END:VTIMEZONE
 BEGIN:VEVENT
-UID:manish-manvi-welcome@jiteshgosar.com
-DTSTAMP:20260113T042936Z
-DTSTART;TZID=Asia/Kolkata:20260214T180000
-DTEND;TZID=Asia/Kolkata:20260214T210000
-SUMMARY:Welcome
-LOCATION:Wedding Venue\, City\, State
-DESCRIPTION:Map: https://maps.google.com/?q=Wedding%20Venue
+UID:manish-manvi-lagan-teeka@jiteshgosar.com
+DTSTAMP:20260115T061753Z
+DTSTART;TZID=Asia/Kolkata:20260215T140000
+DTEND;TZID=Asia/Kolkata:20260215T153000
+SUMMARY:Lagan Teeka
+LOCATION:Sarayu Mahal\, Ramnagariya\, Jagatpura\, Jaipur
+DESCRIPTION:Sunday\, 15th February 2026\nMap: https://maps.app.goo.gl/bHjyj2hNc3uvLvrv9?g_st=iw
 END:VEVENT
 BEGIN:VEVENT
-UID:manish-manvi-haldi@jiteshgosar.com
-DTSTAMP:20260113T042936Z
-DTSTART;TZID=Asia/Kolkata:20260215T103000
-DTEND;TZID=Asia/Kolkata:20260215T130000
-SUMMARY:Haldi
-LOCATION:Wedding Venue\, City\, State
-DESCRIPTION:Map: https://maps.google.com/?q=Wedding%20Venue
+UID:manish-manvi-lagan-teeka-lunch@jiteshgosar.com
+DTSTAMP:20260115T061753Z
+DTSTART;TZID=Asia/Kolkata:20260215T160000
+DTEND;TZID=Asia/Kolkata:20260215T180000
+SUMMARY:Lunch
+LOCATION:Sarayu Mahal\, Ramnagariya\, Jagatpura\, Jaipur
+DESCRIPTION:Lunch at 4 PM\nMap: https://maps.app.goo.gl/bHjyj2hNc3uvLvrv9?g_st=iw
 END:VEVENT
 BEGIN:VEVENT
-UID:manish-manvi-mehendi@jiteshgosar.com
-DTSTAMP:20260113T042936Z
-DTSTART;TZID=Asia/Kolkata:20260216T160000
-DTEND;TZID=Asia/Kolkata:20260216T200000
-SUMMARY:Mehendi
-LOCATION:Wedding Venue\, City\, State
-DESCRIPTION:Map: https://maps.google.com/?q=Wedding%20Venue
+UID:manish-manvi-tel-vinayak@jiteshgosar.com
+DTSTAMP:20260115T061753Z
+DTSTART;TZID=Asia/Kolkata:20260217T100000
+DTEND;TZID=Asia/Kolkata:20260217T120000
+SUMMARY:Tel Vinayak (तेल विनायक)
+LOCATION:Family Residence\, Kalyan Patel ki Dhani\, Village Rahuwas\, Dausa
+DESCRIPTION:प्रातः 10 बजे\nMap: https://maps.app.goo.gl/VxGJRDaJp3e8KJns6?g_st=ic
 END:VEVENT
 BEGIN:VEVENT
-UID:manish-manvi-sangeet@jiteshgosar.com
-DTSTAMP:20260113T042936Z
+UID:manish-manvi-preetibhoj-lunch@jiteshgosar.com
+DTSTAMP:20260115T061753Z
+DTSTART;TZID=Asia/Kolkata:20260217T150000
+DTEND;TZID=Asia/Kolkata:20260217T170000
+SUMMARY:Lunch (Preetibhoj / प्रीतिभोज)
+LOCATION:Family Residence\, Kalyan Patel ki Dhani\, Village Rahuwas\, Dausa
+DESCRIPTION:दोपहर 3 बजे से\nMap: https://maps.app.goo.gl/VxGJRDaJp3e8KJns6?g_st=ic
+END:VEVENT
+BEGIN:VEVENT
+UID:manish-manvi-chaak@jiteshgosar.com
+DTSTAMP:20260115T061753Z
+DTSTART;TZID=Asia/Kolkata:20260217T170000
+DTEND;TZID=Asia/Kolkata:20260217T180000
+SUMMARY:Chaak (चाक)
+LOCATION:Family Residence\, Kalyan Patel ki Dhani\, Village Rahuwas\, Dausa
+DESCRIPTION:सांय 5 बजे\nMap: https://maps.app.goo.gl/VxGJRDaJp3e8KJns6?g_st=ic
+END:VEVENT
+BEGIN:VEVENT
+UID:manish-manvi-bhaat@jiteshgosar.com
+DTSTAMP:20260115T061753Z
 DTSTART;TZID=Asia/Kolkata:20260217T190000
-DTEND;TZID=Asia/Kolkata:20260217T230000
-SUMMARY:Sangeet
-LOCATION:Wedding Venue\, City\, State
-DESCRIPTION:Map: https://maps.google.com/?q=Wedding%20Venue
+DTEND;TZID=Asia/Kolkata:20260217T210000
+SUMMARY:Bhaat (भात)
+LOCATION:Family Residence\, Kalyan Patel ki Dhani\, Village Rahuwas\, Dausa
+DESCRIPTION:रात 7 बजे\nMap: https://maps.app.goo.gl/VxGJRDaJp3e8KJns6?g_st=ic
 END:VEVENT
 BEGIN:VEVENT
-UID:manish-manvi-wedding@jiteshgosar.com
-DTSTAMP:20260113T042936Z
-DTSTART;TZID=Asia/Kolkata:20260219T110000
-DTEND;TZID=Asia/Kolkata:20260219T150000
-SUMMARY:Wedding Ceremony
-LOCATION:Wedding Venue\, City\, State
-DESCRIPTION:Map: https://maps.google.com/?q=Wedding%20Venue
+UID:manish-manvi-baraat-departure@jiteshgosar.com
+DTSTAMP:20260115T061753Z
+DTSTART;TZID=Asia/Kolkata:20260219T170000
+DTEND;TZID=Asia/Kolkata:20260219T180000
+SUMMARY:Baraat Departure
+LOCATION:Family Residence\, Kalyan Patel ki Dhani\, Village Rahuwas\, Dausa
+DESCRIPTION:Baraat will depart at 5 PM from Rahuwas\, Dausa for the wedding venue.\nMap: https://maps.app.goo.gl/VxGJRDaJp3e8KJns6?g_st=ic
+END:VEVENT
+BEGIN:VEVENT
+UID:manish-manvi-wedding-dinner@jiteshgosar.com
+DTSTAMP:20260115T061753Z
+DTSTART;TZID=Asia/Kolkata:20260219T190000
+DTEND;TZID=Asia/Kolkata:20260219T210000
+SUMMARY:Dinner
+LOCATION:Amara Wedding Banquet\, Opp New RTO\, Jagatpura\, Jaipur
+DESCRIPTION:Thursday\, 19th February 2026\nMap: https://maps.app.goo.gl/SYvoFd9sdQpq6WMz8?g_st=ic
+END:VEVENT
+BEGIN:VEVENT
+UID:manish-manvi-marriage-ceremony@jiteshgosar.com
+DTSTAMP:20260115T061753Z
+DTSTART;TZID=Asia/Kolkata:20260219T210000
+DTEND;TZID=Asia/Kolkata:20260219T233000
+SUMMARY:Marriage Ceremony
+LOCATION:Amara Wedding Banquet\, Opp New RTO\, Jagatpura\, Jaipur
+DESCRIPTION:Ceremony timings are approximated for calendar convenience.\nMap: https://maps.app.goo.gl/SYvoFd9sdQpq6WMz8?g_st=ic
 END:VEVENT
 BEGIN:VEVENT
 UID:manish-manvi-ceremony@jiteshgosar.com
-DTSTAMP:20260113T042936Z
+DTSTAMP:20260115T061753Z
 DTSTART;TZID=Asia/Kolkata:20260219T110000
 DTEND;TZID=Asia/Kolkata:20260219T130000
 SUMMARY:Wedding Ceremony
 LOCATION:Wedding Venue\, City\, State
-DESCRIPTION:Map: https://maps.google.com/?q=Wedding%20Venue
+DESCRIPTION:Map: https://www.google.com/maps/place/Jaipur\,+Rajasthan
 END:VEVENT
 END:VCALENDAR
